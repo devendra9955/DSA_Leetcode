@@ -1,34 +1,55 @@
 class Solution {
-    public class Triplet implements Comparable<Triplet>{
-        int x;
-        int y;
-        int d;
-        Triplet(int x, int y , int d){
-            this.x = x;
-            this.y = y;
-            this.d = d;
-        }
-        public int compareTo(Triplet t){
-            return this.d - t.d;
-        }
-    }
+    // public class Triplet implements Comparable<Triplet>{
+    //     int x;
+    //     int y;
+    //     int d;
+    //     Triplet(int x, int y , int d){
+    //         this.x = x;
+    //         this.y = y;
+    //         this.d = d;
+    //     }
+    //     public int compareTo(Triplet t){
+    //         return this.d - t.d;
+    //     }
+    // }
+    // public int[][] kClosest(int[][] points, int k) {
+    //     PriorityQueue<Triplet> pq = new PriorityQueue<>(Collections.reverseOrder());
+    //     for(int i=0; i<points.length; i++){
+    //         int x = points[i][0];
+    //         int y = points[i][1];
+    //         int d = x*x + y*y;
+    //         pq.add(new Triplet(x,y,d));
+    //         if(pq.size() > k) pq.remove();
+    //     }
+    //     int[][] ans = new int[k][2];
+    //     int i=0;
+    //     while(pq.size()>0){
+    //         Triplet top = pq.remove();
+    //         ans[i][0] = top.x;
+    //         ans[i][1] = top.y;
+    //         i++;
+    //     }
+    //     return ans;
+
     public int[][] kClosest(int[][] points, int k) {
-        PriorityQueue<Triplet> pq = new PriorityQueue<>(Collections.reverseOrder());
+        PriorityQueue<int[]> pq = new PriorityQueue<>((x,y)->y[2]-x[2]);
         for(int i=0; i<points.length; i++){
             int x = points[i][0];
             int y = points[i][1];
             int d = x*x + y*y;
-            pq.add(new Triplet(x,y,d));
+            int[] a = {x,y,d};
+            pq.add(a);
             if(pq.size() > k) pq.remove();
         }
         int[][] ans = new int[k][2];
         int i=0;
         while(pq.size()>0){
-            Triplet top = pq.remove();
-            ans[i][0] = top.x;
-            ans[i][1] = top.y;
+            int[] top = pq.remove();
+            ans[i][0] = top[0];
+            ans[i][1] = top[1];
             i++;
         }
         return ans;
+
     }
 }
