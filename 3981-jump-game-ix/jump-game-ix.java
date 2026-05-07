@@ -1,31 +1,35 @@
+
 class Solution {
 
-    record Item(int value, int left, int right) {}
-
     public int[] maxValue(int[] nums) {
+
         int n = nums.length;
+       //prefix max
+        int[] prefixMax = new int[n];
         int[] ans = new int[n];
 
-        List<Item> stack = new ArrayList<>();
+        prefixMax[0] = nums[0];
 
-        for (int i = 0; i < n; i++) {
-            Item curr = new Item(nums[i], i, i);
+        for (int i = 1; i < n; i++) {
+            prefixMax[i] = Math.max(prefixMax[i - 1], nums[i]);
+        }
+       //suffix min
+        int[] sufmin = new int[n];
 
-            while (!stack.isEmpty() && stack.getLast().value() > nums[i]) {
-                Item top = stack.removeLast();
-                curr = new Item(
-                    Math.max(curr.value(), top.value()),
-                    top.left(),
-                    curr.right()
-                );
-            }
+        sufmin[n - 1] = nums[n - 1];
 
-            stack.add(curr);
+        for (int i = n - 2; i >= 0; i--) {
+            sufmin[i] = Math.min(sufmin[i + 1], nums[i]);
         }
 
-        for (int i = 0; i < stack.size(); i++) {
-            for (int j = stack.get(i).left(); j <= stack.get(i).right(); j++) {
-                ans[j] = stack.get(i).value();
+        ans[n - 1] = prefixMax[n - 1];
+       //find the value 
+        for (int i = n - 2; i >= 0; i--) {
+
+            if (prefixMax[i] > sufmin[i + 1]) {
+                ans[i] = ans[i + 1];
+            } else {
+                ans[i] = prefixMax[i];
             }
         }
 
