@@ -8,14 +8,32 @@ class Solution {
         return dp[idx][prev+1] = Math.max(pick,skip);
 
     }
-    public int lengthOfLIS(int[] nums) {
-        int n = nums.length;
-        int dp[][] = new int[n][n+1];
-        for(int i=0; i<n; i++){
-            for(int j=0; j<=n; j++){
-                dp[i][j] = -1;
+    public int lengthOfLIS(int[] arr) {
+        // int n = nums.length;
+        // int dp[][] = new int[n][n+1];
+        // for(int i=0; i<n; i++){
+        //     for(int j=0; j<=n; j++){
+        //         dp[i][j] = -1;
+        //     }
+        // }
+        // return helper(0,-1,nums,dp);
+
+        // tabulation 
+        int n = arr.length;
+        int dp[] = new int[n];
+        Arrays.fill(dp,1);
+        int maxLength = 1;
+        for(int i=1; i<n; i++){
+            int max = 0;
+            for(int j=0; j<i; j++){
+                if(arr[j] < arr[i]){
+                    max = Math.max(max,dp[j]);
+                }
             }
+            dp[i] = dp[i]+max;
+            maxLength = Math.max(dp[i],maxLength);
         }
-        return helper(0,-1,nums,dp);
+        return maxLength;
+
     }
 }
