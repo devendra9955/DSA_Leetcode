@@ -17,11 +17,12 @@ class Solution {
         for(int i=1; i<=n; i++){
             fast = fast.next;
         }
-        ListNode newfast = fast;
-        if(newfast == null) return head.next;
-        while(newfast != null && newfast.next != null){
+          if(fast == null) {
+            return head.next;
+        }
+        while(fast.next != null){
             slow = slow.next;
-            newfast = newfast.next;
+            fast = fast.next;
         }
         slow.next = slow.next.next;
         return head;
