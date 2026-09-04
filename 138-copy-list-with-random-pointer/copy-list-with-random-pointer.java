@@ -14,35 +14,70 @@ class Node {
 */
 
 class Solution {
-    public Node deepCopy(Node head1){
-        Node temp1 = head1;
+    public Node deepCopy(Node head){
+        Node temp1 = head;
         Node head2 = new Node(-1);
         Node temp2 = head2;
         while(temp1 != null){
             Node t = new Node(temp1.val);
             temp2.next = t;
             temp2 = temp2.next;
-            temp1=temp1.next;
+            temp1 = temp1.next;
         }
         return head2.next;
+
     }
-    public Node copyRandomList(Node a) {
-        HashMap<Node,Node> map = new HashMap<>();
-        Node b = deepCopy(a);
-        Node tempA = a;
-        Node tempB=b;
-        map.put(null,null);
-        while(tempA != null){
-            map.put(tempA,tempB);
-            tempA = tempA.next;
-            tempB = tempB.next;
+    public void merge(Node head1,Node head2){
+        Node dummy = new Node(-1);
+        Node temp = dummy;
+        Node temp1 = head1;
+        Node temp2 = head2;
+        while(temp1 != null && temp2 != null){
+            temp.next = temp1;
+            temp1  = temp1.next;
+            temp = temp.next;
+
+            temp.next = temp2;
+            temp2 = temp2.next;
+            temp = temp.next;
         }
-        tempA = a;
-        while(tempA != null){
-            tempB = map.get(tempA);
-            tempB.random = map.get(tempA.random);
-            tempA = tempA.next;
+    }
+    public void randomconnection(Node head , Node head2){
+        Node temp1 = head;
+        Node temp2 = head2;
+        while(temp1 != null && temp2 != null){
+            if(temp1.random == null) temp2.random = null;
+            else temp2.random = temp1.random.next;
+            temp1 = temp1.next.next;
+            if(temp2.next != null) temp2 = temp2.next.next;
         }
-        return b;
+    }
+    public void split(Node head){
+        Node dummy1 = new Node(-1);
+        Node temp1 = dummy1;
+        Node dummy2 = new Node(-1);
+        Node temp2 = dummy2;
+        Node temp = head;
+        while(temp != null){
+            temp1.next = temp;
+            temp = temp.next;
+            temp1 = temp1.next;
+
+            temp2.next = temp;
+            temp = temp.next;
+            temp2 = temp2.next;
+        } 
+        temp1.next = null;
+    }
+    public Node copyRandomList(Node head) {
+        //creating deep copy without reandom
+        Node head2 = deepCopy(head);
+        //stemp 2 : alternatively connecting list;
+        merge(head,head2);
+        //step : assigning random connection
+        randomconnection(head,head2);
+        // step 4 split the list
+        split(head);
+        return head2;
     }
 }
